@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-->Keys<-->
+    <string name="pref_gyro">gyroOn</string>
+    <string name="pref_acc">accOn</string>
+    <string name="pref_hell">hellOn</string>
+    <string name="pref_prox">proxOn</string>
+    <string name="pref_interval">interval</string>
+
+    <!-->Default Values<-->
+    <bool name="pref_gyro_default">true</bool>
+    <bool name="pref_acc_default">true</bool>
+    <bool name="pref_hell_default">true</bool>
+    <bool name="pref_prox_default">true</bool>
+    <string name="pref_interval_default">1</string>
+
+</resources>

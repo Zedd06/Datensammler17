@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <PreferenceCategory
+        android:title="Allgemein">
+
+        <SwitchPreference
+            android:key="@string/pref_gyro"
+            android:defaultValue="@bool/pref_gyro_default"
+            android:title="Gyrosensor" />
+
+
+        <SwitchPreference
+            android:key="@string/pref_acc"
+            android:defaultValue="@bool/pref_acc_default"
+            android:title="Beschleunigungssensor" />
+
+        <SwitchPreference
+            android:key="@string/pref_prox"
+            android:defaultValue="@bool/pref_prox_default"
+            android:title="Näherungssensor" />
+
+        <SwitchPreference
+            android:key="@string/pref_hell"
+            android:defaultValue="@bool/pref_hell_default"
+            android:title="Helligkeitssensor" />
+
+
+
+        <EditTextPreference
+            android:key="@string/pref_interval"
+            android:inputType="number"
+            android:maxLines="1"
+            android:title="Intervall"
+            android:defaultValue="@string/pref_interval_default"/>
+
+
+
+    </PreferenceCategory>
+
+
+
+
+
+</PreferenceScreen>
