@@ -176,11 +176,11 @@ public class Anzeige extends AppCompatActivity implements SensorEventListener {
         graph_prox.getViewport().setMaxX(10);
         graph_prox.getViewport().setScrollable(true);
         // Achsenbeschriftung
-        graph_prox.getGridLabelRenderer().setVerticalAxisTitle("Abstand in cm");
+        graph_prox.getGridLabelRenderer().setVerticalAxisTitle("Abstand in cm....Edgar wieso bist du nicht da !!!!");
         graph_prox.getGridLabelRenderer().setHorizontalAxisTitle("Zeit in s");
 
         //Speicherfunktion einrichten
-
+        // Edgar wieso bist du nicht da !!!!
         //t.scheduleAtFixedRate(tt,1000,instance.getIntervall());
     }
 
