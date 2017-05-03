@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="?android:attr/listPreferredItemHeight"
+
+    android:padding="6dip">
+    <!-- Item Name -->
+    <TextView
+        android:id="@+id/idGyro"
+
+        android:layout_width="wrap_content"
+        android:layout_height="26dp"
+        />
+    <!-- Item Name -->
+    <TextView
+        android:id="@+id/x"
+
+        android:layout_width="wrap_content"
+        android:layout_height="26dp"
+        android:layout_toRightOf="@+id/idGyro"
+        />
+
+    <!-- Actual Item Name Data -->
+    <TextView
+        android:id="@+id/y"
+
+        android:layout_width="wrap_content"
+        android:layout_height="26dp"
+
+        android:layout_toRightOf="@id/x"
+
+        />
+
+    <!-- Price Tag -->
+    <TextView
+        android:id="@+id/z"
+
+        android:layout_width="wrap_content"
+        android:layout_height="26dp"
+
+        android:layout_toRightOf="@+id/y"
+
+        />
+
+</RelativeLayout>

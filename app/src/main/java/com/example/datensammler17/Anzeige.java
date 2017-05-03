@@ -16,6 +16,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.example.datensammler17.Gyro.Gyro;
+import com.example.datensammler17.Light.Light;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.LegendRenderer;
 import com.jjoe64.graphview.series.DataPoint;
@@ -33,8 +35,10 @@ import static android.R.id.shareText;
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
 public class Anzeige extends AppCompatActivity implements SensorEventListener {
-
+    //Datenbank
+    DBHandler db = new DBHandler(this);
     //Variablen
+    int id=0;
     // Accelerometer Daten
     private double xAcc = 0, yAcc = 0, zAcc = 0;
     private float[] gravity = {9.81f, 9.81f, 9.81f};
@@ -176,11 +180,10 @@ public class Anzeige extends AppCompatActivity implements SensorEventListener {
         graph_prox.getViewport().setMaxX(10);
         graph_prox.getViewport().setScrollable(true);
         // Achsenbeschriftung
-        graph_prox.getGridLabelRenderer().setVerticalAxisTitle("Abstand in cm....Edgar wieso bist du nicht da !!!!");
+        graph_prox.getGridLabelRenderer().setVerticalAxisTitle("Abstand in cm");
         graph_prox.getGridLabelRenderer().setHorizontalAxisTitle("Zeit in s");
 
         //Speicherfunktion einrichten
-        // Edgar wieso bist du nicht da !!!!
         //t.scheduleAtFixedRate(tt,1000,instance.getIntervall());
     }
 
@@ -249,14 +252,18 @@ public class Anzeige extends AppCompatActivity implements SensorEventListener {
                 boolean isProxOn = sharedPref.getBoolean(getString(R.string.pref_prox), true);
 
 
-                if (isGyroOn)
+                if (isGyroOn) {
+                    db.addGYRO(new Gyro(id,xGyro,yGyro,zGyro));
                     gyrotxt = "Gyrometer: " + String.format("%.2f", xGyro) + " "
                             + String.format("%.2f", yGyro) + " " + String.format("%.2f", zGyro) + "\n";
+                }
                 if (isAccOn)
                     acctxt = "Beschleunigung: " + String.format("%.2f", xAcc) + " "
                             + String.format("%.2f", yAcc) + " " + String.format("%.2f", zAcc) + "\n";
-                if (isHellOn)
+                if (isHellOn) {
+                    db.addLIGHT(new Light(id, light));
                     lighttxt = "Helligkeit: " + light + "\n";
+                }
                 if (isProxOn)
                     proxtxt = "Abstand: " + prox + "\n";
                 daten.append("Zeit: " + time + "\n" + gyrotxt + acctxt + gpstxt + lighttxt + proxtxt + "\n");

@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
         startActivity(new Intent(this,Anzeige.class));
     }
 
+    public void showDB(View view) {startActivity(new Intent(this, MenuList.class));}
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
