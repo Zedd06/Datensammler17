@@ -13,8 +13,10 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.example.datensammler17.Gyro.Gyro;
 import com.example.datensammler17.Light.Light;
@@ -33,6 +35,7 @@ import java.util.TimerTask;
 import static android.R.id.message;
 import static android.R.id.shareText;
 import static android.provider.AlarmClock.EXTRA_MESSAGE;
+import static com.example.datensammler17.R.id.gv_acc;
 
 public class Anzeige extends AppCompatActivity implements SensorEventListener {
     //Datenbank
@@ -77,6 +80,13 @@ public class Anzeige extends AppCompatActivity implements SensorEventListener {
     private SharedPreferences sharedPref;
 
 
+    private boolean isGyroOn;
+    private boolean isAccOn;
+    private boolean isHellOn;
+    private boolean isProxOn;
+    private long refreshTime;
+
+
     // Methoden
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,6 +96,7 @@ public class Anzeige extends AppCompatActivity implements SensorEventListener {
         //set preferences to default at first start
         PreferenceManager.setDefaultValues(this, R.xml.pref_general, false);
         sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        checkSettings();
 
 
         //Bildschirm angeschaltet halten
@@ -104,7 +115,16 @@ public class Anzeige extends AppCompatActivity implements SensorEventListener {
         sm.registerListener(this, sensor_prox, SensorManager.SENSOR_DELAY_NORMAL);
 
         // Liniendiagramm des Gyroscope
-        GraphView graph_gyro = (GraphView) findViewById(R.id.graph_gyro);
+        GraphView graph_gyro = (GraphView) findViewById(R.id.gv_gyro);
+        TextView tv_gyro = (TextView) findViewById(R.id.gyro_txt);
+        if(isGyroOn){
+            graph_gyro.setVisibility(View.VISIBLE);
+            tv_gyro.setVisibility(View.VISIBLE);
+        }
+        else {
+            graph_gyro.setVisibility(View.INVISIBLE);
+            tv_gyro.setVisibility(View.INVISIBLE);
+        }
         series_gyro[0] = new LineGraphSeries<>();
         series_gyro[0].setColor(Color.BLUE);
         graph_gyro.addSeries(series_gyro[0]);
@@ -129,8 +149,18 @@ public class Anzeige extends AppCompatActivity implements SensorEventListener {
         graph_gyro.getLegendRenderer().setVisible(true);
         graph_gyro.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
 
+
         // Liniendiagramm des Accelerometers
-        GraphView graph_acc = (GraphView) findViewById(R.id.graph_acc);
+        GraphView graph_acc = (GraphView) findViewById(gv_acc);
+        TextView tv_acc = (TextView) findViewById(R.id.acc_txt);
+        if(isAccOn){
+            graph_acc.setVisibility(View.VISIBLE);
+            tv_acc.setVisibility(View.VISIBLE);
+        }
+        else {
+            graph_acc.setVisibility(View.INVISIBLE);
+            tv_acc.setVisibility(View.INVISIBLE);
+        }
         series_acc[0] = new LineGraphSeries<>();
         series_acc[0].setColor(Color.BLUE);
         graph_acc.addSeries(series_acc[0]);
@@ -155,8 +185,20 @@ public class Anzeige extends AppCompatActivity implements SensorEventListener {
         graph_acc.getLegendRenderer().setVisible(true);
         graph_acc.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
 
+
+
+
         //  Liniendiagramm des Lichtsensors
-        GraphView graph_light = (GraphView) findViewById(R.id.graph_light);
+        GraphView graph_light = (GraphView) findViewById(R.id.gv_light);
+        TextView tv_light = (TextView) findViewById(R.id.hellTxt);
+        if(isHellOn){
+            graph_light.setVisibility(View.VISIBLE);
+            tv_light.setVisibility(View.VISIBLE);
+        }
+        else {
+            graph_light.setVisibility(View.INVISIBLE);
+            tv_light.setVisibility(View.INVISIBLE);
+        }
         series_light = new LineGraphSeries<>();
         series_light.setColor(Color.YELLOW);
         graph_light.addSeries(series_light);
@@ -169,8 +211,22 @@ public class Anzeige extends AppCompatActivity implements SensorEventListener {
         graph_light.getGridLabelRenderer().setVerticalAxisTitle("Helligkeit in lx");
         graph_light.getGridLabelRenderer().setHorizontalAxisTitle("Zeit in s");
 
+
+
+
+
         // Liniendiagramm des Proximitysensors
-        GraphView graph_prox = (GraphView) findViewById(R.id.graph_prox);
+        GraphView graph_prox = (GraphView) findViewById(R.id.gv_prox);
+        TextView tv_prox = (TextView) findViewById(R.id.proxTxt);
+        if(isProxOn){
+            graph_prox.setVisibility(View.VISIBLE);
+            tv_prox.setVisibility(View.VISIBLE);
+        }
+        else {
+            graph_prox.setVisibility(View.INVISIBLE);
+            tv_prox.setVisibility(View.INVISIBLE);
+        }
+
         series_prox = new LineGraphSeries<>();
         series_prox.setColor(Color.BLACK);
         graph_prox.addSeries(series_prox);
@@ -185,6 +241,16 @@ public class Anzeige extends AppCompatActivity implements SensorEventListener {
 
         //Speicherfunktion einrichten
         //t.scheduleAtFixedRate(tt,1000,instance.getIntervall());
+    }
+
+
+
+    public void checkSettings(){
+        isGyroOn = sharedPref.getBoolean(getString(R.string.pref_gyro), false);
+        isAccOn = sharedPref.getBoolean(getString(R.string.pref_acc), true);
+        isHellOn = sharedPref.getBoolean(getString(R.string.pref_hell), true);
+        isProxOn = sharedPref.getBoolean(getString(R.string.pref_prox), true);
+        refreshTime = Long.parseLong(sharedPref.getString(getString(R.string.pref_interval),getString(R.string.pref_interval_default)))*1000;
     }
 
 
@@ -239,6 +305,7 @@ public class Anzeige extends AppCompatActivity implements SensorEventListener {
     public void setTimer() {
         t = new Timer();
         interval = Long.parseLong(sharedPref.getString(getString(R.string.pref_interval),getString(R.string.pref_interval_default)));
+        Log.d("Intervall: ",String.valueOf(interval));
         tt = new TimerTask() {
             @Override
             public void run() {
@@ -298,11 +365,11 @@ public class Anzeige extends AppCompatActivity implements SensorEventListener {
                 series_light.appendData(new DataPoint(time, light), true, 50);
                 // proximity graph laeuft
                 series_prox.appendData(new DataPoint(time, prox), true, 50);
-                handle.postDelayed(this, 1000);
+                handle.postDelayed(this, refreshTime);
             }
         };
         setTimer();
-        handle.postDelayed(runs, 1000);
+        handle.postDelayed(runs, refreshTime);
     }
 
 

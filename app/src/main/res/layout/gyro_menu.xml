@@ -4,7 +4,7 @@
     android:layout_height="match_parent">
 
     <Button
-        android:text="show Data"
+        android:text="Daten anzeigen"
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:textSize="20sp"
@@ -14,7 +14,7 @@
         android:layout_marginTop="100dp"/>
 
     <Button
-        android:text="Delte all Gyro Data"
+        android:text="Daten löschen"
         android:layout_width="200dp"
         android:layout_height="50dp"
         android:textSize="20sp"
